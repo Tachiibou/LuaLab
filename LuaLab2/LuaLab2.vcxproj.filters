@@ -40,5 +40,8 @@
     <None Include="script.lua">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="script2.lua">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
