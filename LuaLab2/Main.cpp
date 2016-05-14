@@ -49,5 +49,6 @@ int main()
 	// SFML CODE AFTER THIS MAGNIFICENT COMMENT
 	game->Start();
 	delete game;
+
 	return 0;
 }
