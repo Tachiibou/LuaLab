@@ -1,11 +1,13 @@
 #include <iostream>
 #include "lua.hpp"
 #include "SFML\Graphics.hpp"
+#include "GameMain.h"
 
 
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	GameMain* game = new GameMain();
 
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
@@ -13,7 +15,7 @@ int main()
 	int error = luaL_loadfile(L, "script.lua") || lua_pcall(L, 0, 0, 0);
 
 	lua_getglobal(L, "fibbonacci");
-	lua_pushinteger(L, 9);
+	lua_pushinteger(L, 20);
 
 	error = lua_pcall(L, 1, 1, 0);
 
@@ -30,9 +32,7 @@ int main()
 	lua_State* L2 = luaL_newstate();
 	luaL_openlibs(L2);
 
-	int error2 = luaL_loadfile(L2,"script2.lua") || lua_pcall(L2, 0, 0, 0);
-	lua_pcall(L2, 0, 0, 0);
-	lua_pcall(L2, 0, 0, 0);
+	int error2 = luaL_loadfile(L2,"Map.lua") || lua_pcall(L2, 0, 0, 0);
 
 	//error2 = lua_pcall(L, 0, 0, 0);
 
@@ -47,24 +47,7 @@ int main()
 	lua_close(L2);
 
 	// SFML CODE AFTER THIS MAGNIFICENT COMMENT
-
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
-
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		window.clear();
-		window.draw(shape);
-		window.display();
-	}
-
+	game->Start();
+	delete game;
 	return 0;
 }

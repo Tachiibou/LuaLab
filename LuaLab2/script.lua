@@ -7,7 +7,9 @@ function sqr2(rot)
 end
 
 function fibbonacci(tal)
-if tal <= 2 
-then return 1 
-else return(fibbonacci(tal-2) + fibbonacci(tal-1)) end
+	if tal <= 2 
+		then return 1 
+	else 
+		return(fibbonacci(tal-2) + fibbonacci(tal-1))
+	 end
 end

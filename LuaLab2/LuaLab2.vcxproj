@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameMain.h" />
     <ClInclude Include="lauxlib.h" />
     <ClInclude Include="lua.h" />
     <ClInclude Include="lua.hpp" />
@@ -159,9 +160,11 @@
     <ClInclude Include="lualib.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Map.lua" />
     <None Include="script.lua" />
     <None Include="script2.lua" />
   </ItemGroup>
