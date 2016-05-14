@@ -5,6 +5,8 @@
 
 int main()
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
 
@@ -23,7 +25,7 @@ int main()
 		lua_pop(L, 1);
 	}
 
-	delete L;
+	lua_close(L);
 
 	lua_State* L2 = luaL_newstate();
 	luaL_openlibs(L2);
@@ -41,6 +43,10 @@ int main()
 		std::cerr << "Unable to run:" << lua_tostring(L2, -1) << std::endl;
 		lua_pop(L2, 1);
 	}
+
+	lua_close(L2);
+
+	// SFML CODE AFTER THIS MAGNIFICENT COMMENT
 
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
