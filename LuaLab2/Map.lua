@@ -1,7 +1,7 @@
 
 Map = {}
-width = 0
-height = 0
+width = -1
+height = -1
 
 Block = {type = "dirt",
 		texture = "dirt.png",
@@ -17,10 +17,16 @@ Block.New = function()
 
 	return b
 end
-
+-- BLOCK FUNCTIONS START
 Block.isGrass = function(self)
 	self.type = "grass"
 	self.texture = "grass.png"
+
+end
+
+Block.isDirt = function(self)
+	self.type = "dirt"
+	self.texture = "dirt.png"
 
 end
 
@@ -46,12 +52,17 @@ Block.isGoal = function(self)
 	self.texture = "goal.png"
 end
 
+Block.setPos = function (self, x , y)
+	self.x = x
+	self.y = y
+end
+-- CREATE MAP FUNCTIONS
 function CreateBlockArr(x,y)
 	local blockArr = {}
 	local index
-	for xf = 1, x,1 do
-		for yf = 1, y, 1 do
-			index = y*(xf - 1) + (yf - 1)
+	for xf = 0, x-1,1 do
+		for yf = 0, y-1, 1 do
+			index = y*(xf) + (yf)
 			blockArr[index] = Block.New()
 			blockArr[index].x = xf
 			blockArr[index].y = yf
@@ -64,27 +75,96 @@ function CreateBlockArr(x,y)
 	return blockArr
 end
 
-Block.setPos = function (self, x , y)
-	self.x = x
-	self.y = y
-end
-
 function CreateMap(x,y)
 	height = y
 	width = x
 	Map = CreateBlockArr(height,width)
 end
 
+-- GET FUNCTIONS TO BE CALLED FROM c++ START
 function GetTile(x,y)
-	return Map[height*x + y]
+	if x >= width or y >= height then print("x or y is bigger than width or height Error 1337 - Tile Error")
+
+	else return Map[height*x + y] end
 end
 
-CreateMap(5,5)
+function GetType(x,y)
+	if x >= width or y >= height then print("x or y is bigger than width or height Error 1338 - Type Error")
 
-derp = GetTile(1,4);
+	else return Map[height*x + y].type end
+end
 
-Block.isGrass(derp)
+function GetTexture(x,y)
+	if x >= width or y >= height then print("x or y is bigger than width or height Error 1339 - Texture Error")
 
-print(derp.x)
-print(derp.y)
-print (derp.type)
+	else return Map[height*x + y].texture end
+end
+
+function GetWidth()
+	return width
+end
+
+function GetHeight()
+	return height
+end
+
+-- SET FUNCTIONS TO BE CALLED FROM c++ START
+function SetGrass(x,y)
+	Block.isGrass(GetTile(x,y))
+end
+
+function SetDirt(x,y)
+	Block.isDirt(GetTile(x,y))
+end
+
+function SetSpawn(x,y)
+	Block.isSpawn(GetTile(x,y))
+end
+
+function SetWall(x,y)
+	Block.isWall(GetTile(x,y))
+end
+
+function SetPoint(x,y)
+	Block.isPoint(GetTile(x,y))
+end
+
+function SetGoal(x,y)
+	Block.isGoal(GetTile(x,y))
+end
+
+function SaveFile(name)
+	local file = io.open(name,"w")
+	file:write(width .. "\n" .. height .. "\n")
+	for xf = 0, width-1,1 do
+		for yf = 0, height-1, 1 do
+			index = height*(xf) + (yf)
+
+			file:write(xf .. ":" .. yf .. "  " .. GetType(xf,yf) .. "\n")
+			--print(blockArr[index].y)
+		end
+	end
+	
+	file:close()
+end
+
+function LoadMap(name)
+	local file = io.open(name,"rb")
+	while true do
+		line = file:read("*line")
+		if line == nil then break end
+		print (line)
+	end
+	file:close()
+
+	
+end
+
+CreateMap(3,3)
+
+SetWall(2,2)
+
+SaveFile("herro.txt")
+
+LoadMap("herro.txt")
+
