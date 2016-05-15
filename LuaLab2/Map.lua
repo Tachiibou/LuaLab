@@ -140,7 +140,8 @@ function SaveFile(name)
 		for yf = 0, height-1, 1 do
 			index = height*(xf) + (yf)
 
-			file:write(xf .. ":" .. yf .. "  " .. GetType(xf,yf) .. "\n")
+			file:write(GetType(xf,yf) .. "\n")
+			--file:write(xf .. ":" .. yf .. "  " .. GetType(xf,yf) .. "\n")
 			--print(blockArr[index].y)
 		end
 	end
@@ -150,19 +151,38 @@ end
 
 function LoadMap(name)
 	local file = io.open(name,"rb")
+	local x = 0
+	local y = 0
+	local walls = 0
+	local a = file:read("*number")
+	local b = file:read("*number")
+	local c = file:read("*line") -- need to read this to change line for some reason, this is NIL dont know why
+	print(a,b,c)
 	while true do
 		line = file:read("*line")
 		if line == nil then break end
+		print ("x: " .. x .. " y : " .. y)
 		print (line)
+		--print (line.find(line,"wall"))
+		if (line.find(line,"wall")) then walls = walls + 1 end
+
+		--print ("x:" .. x .. " y: " .. y)
+		y = y + 1
+
+		if y >= height then x = x + 1; y = 0 end
 	end
+	print ("we found " .. walls .. " walls.")
 	file:close()
 
 	
 end
 
-CreateMap(3,3)
+CreateMap(3,5)
 
 SetWall(2,2)
+SetWall(1,2)
+SetWall(0,0)
+SetWall(0,1)
 
 SaveFile("herro.txt")
 
