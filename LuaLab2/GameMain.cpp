@@ -7,7 +7,10 @@ GameMain::GameMain()
 	this->window_height = 600;
 	this->window_width = 800;
 
-	this->textureHandler = new TextureHandler();
+	//this->textureHandler = new TextureHandler();
+	this->map = new Map();
+
+	this->map->Instantiate();
 }
 
 
@@ -21,6 +24,13 @@ void GameMain::Update(const float & dt)
 
 }
 
+void GameMain::Draw() {
+	window->clear();
+	this->map->Draw(this->window);
+	
+	window->display();
+}
+
 void GameMain::Start()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(this->window_width, this->window_height), "Shit Game");
@@ -29,10 +39,15 @@ void GameMain::Start()
 	{
 		this->handleEvents();
 		
-
-		window->clear();
-		window->display();
+		Update(.1f);
+		Draw();
+		
 	}
+}
+
+sf::Vector2i GameMain::getMousePos() {
+	return sf::Mouse::getPosition(*this->window);
+
 }
 
 void GameMain::handleEvents() {
@@ -40,5 +55,16 @@ void GameMain::handleEvents() {
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
+
+		if (event.type == sf::Event::KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::Num1 ||
+				event.key.code == sf::Keyboard::Num2 ||
+				event.key.code == sf::Keyboard::Num3 ||
+				event.key.code == sf::Keyboard::Num4) {
+
+				this->map->changeMapAt(event.key.code, getMousePos());
+			}
+		}
 	}
 }
