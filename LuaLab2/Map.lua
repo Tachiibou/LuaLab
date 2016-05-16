@@ -154,19 +154,24 @@ function LoadMap(name)
 	local x = 0
 	local y = 0
 	local walls = 0
-	local a = file:read("*number")
-	local b = file:read("*number")
+	local a = file:read("*number") -- width
+	local b = file:read("*number") -- height
 	local c = file:read("*line") -- need to read this to change line for some reason, this is NIL dont know why
+
+	CreateMap(a,b) -- create an empty map
 	print(a,b,c)
+
 	while true do
 		line = file:read("*line")
-		if line == nil then break end
-		print ("x: " .. x .. " y : " .. y)
-		print (line)
-		--print (line.find(line,"wall"))
-		if (line.find(line,"wall")) then walls = walls + 1 end
+		if line == nil then break end -- end loop
 
-		--print ("x:" .. x .. " y: " .. y)
+		if (line.find(line,"dirt")) then SetDirt(x,y) end
+		if (line.find(line,"wall")) then SetWall(x,y) end
+		if (line.find(line,"grass")) then SetGrass(x,y) end
+		if (line.find(line,"goal")) then SetGoal(x,y) end
+		if (line.find(line,"point")) then SetPoint(x,y) end
+		if (line.find(line,"spawn")) then SetSpawn(x,y) end
+
 		y = y + 1
 
 		if y >= height then x = x + 1; y = 0 end
@@ -177,14 +182,17 @@ function LoadMap(name)
 	
 end
 
-CreateMap(3,5)
+--CreateMap(5,5)
 
-SetWall(2,2)
-SetWall(1,2)
-SetWall(0,0)
-SetWall(0,1)
+--CreateMap(5,5)
 
-SaveFile("herro.txt")
+--SaveFile("test1.txt")
 
-LoadMap("herro.txt")
+--LoadMap("test1.txt")
+
+--SetGoal(0,2)
+--SetPoint(0,0)
+--SetGrass(1,1)
+--SetSpawn(4,4)
+--SaveFile("test2.txt")
 
