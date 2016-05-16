@@ -12,7 +12,8 @@ GameMain::GameMain()
 
 	this->map->Instantiate();
 
-
+	this->timeSinceLastFPS = 0;
+	FPS = 0;
 
 	//l_map_bridge->setBlock(3, 3, BlockType::WALL);
 
@@ -34,7 +35,7 @@ GameMain::~GameMain()
 
 void GameMain::Update(const float & dt)
 {
-
+	doFPS(dt);
 }
 
 void GameMain::Draw() {
@@ -51,11 +52,22 @@ void GameMain::Start()
 	while (window->isOpen())
 	{
 		this->handleEvents();
+		this->deltaTime = clock.restart().asSeconds();
 		
-		Update(.1f);
+		Update(deltaTime);
 		Draw();
 		
 	}
+}
+
+void GameMain::doFPS(const float & dt) {
+	if (this->timeSinceLastFPS >= 1) {
+		std::cout << "FPS: " << FPS << std::endl;
+		FPS = 0;
+		timeSinceLastFPS = 0;
+	}
+	FPS += 1;
+	timeSinceLastFPS += dt;
 }
 
 sf::Vector2i GameMain::getMousePos() {

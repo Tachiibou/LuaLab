@@ -9,8 +9,8 @@ Map::Map()
 
 	l_map_bridge = new LuaMapBridge();
 
-	l_map_bridge->createMap(50, 50);
-	//l_map_bridge->loadMap("Elsas Äventyr.txt");
+	//l_map_bridge->createMap(50, 50);
+	l_map_bridge->loadMap("Elsas Äventyr.txt");
 
 	
 	
@@ -76,7 +76,7 @@ void Map::loadLuaBlockAt(const int & index) {
 }
 
 void Map::changeMapAt(sf::Keyboard::Key key, sf::Vector2i mousePos) {
-	system("cls");
+	//system("cls");
 	for (unsigned int i = 0; i < this->mapBlocks.size(); i++) {
 		if (this->mapBlocks.at(i)->isInside(mousePos)) {
 
@@ -84,7 +84,7 @@ void Map::changeMapAt(sf::Keyboard::Key key, sf::Vector2i mousePos) {
 			loadLuaBlockAt(i);
 
 
-			printf("Inside!!!: || Relative to x:%i , y: %i", this->mapBlocks.at(i)->getPos().x, this->mapBlocks.at(i)->getPos().y);
+			//printf("Inside!!!: || Relative to x:%i , y: %i", this->mapBlocks.at(i)->getPos().x, this->mapBlocks.at(i)->getPos().y);
 		}
 	}
 }

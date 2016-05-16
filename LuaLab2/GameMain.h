@@ -13,8 +13,16 @@ private:
 
 	sf::Event event;
 	sf::RenderWindow* window;
+	sf::Clock clock;
+	float lastTime;
 	void handleEvents();
 	Map* map;
+
+	float FPS;
+	float deltaTime;
+	float timeSinceLastFPS;
+
+	void doFPS(const float& dt);
 	
 public:
 	GameMain();
