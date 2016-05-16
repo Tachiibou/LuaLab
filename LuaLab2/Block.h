@@ -3,10 +3,15 @@
 #include <map>
 #include "SFML\Graphics.hpp"
 
-
-enum BlockType{
+enum BlockType {
+	GRASS,
 	DIRT,
-	NRBLOCKTYPES
+	SPAWN,
+	WALL,
+	POINT,
+	GOAL,
+	NRTYPES
+
 };
 
 class Block
@@ -38,6 +43,10 @@ public:
 	sf::IntRect getRect() const;
 
 	bool isInside(sf::Vector2i pos) const;
+
+	sf::Vector2i getPos() const;
+
+	void editBlock(BlockType type, std::string textureName);
 };
 
 #endif

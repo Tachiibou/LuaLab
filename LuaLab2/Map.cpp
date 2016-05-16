@@ -7,8 +7,17 @@ Map::Map()
 	this->gameWidth = 800;
 	this->gameHeight = 600;
 
-	this->nrBlocksWidth = 20;
-	this->nrBlocksHeight = 15;
+	l_map_bridge = new LuaMapBridge();
+
+	l_map_bridge->createMap(50, 50);
+	//l_map_bridge->loadMap("Elsas Äventyr.txt");
+
+	
+	
+	BlockType type = l_map_bridge->getBlockType(4, 4);
+	std::string type2 = l_map_bridge->getBlockTexture(4, 4);
+
+	int k = 0;
 }
 
 
@@ -17,6 +26,7 @@ Map::~Map()
 	for (unsigned int i = 0; i < mapBlocks.size();i++){
 		delete this->mapBlocks.at(i);
 	}
+	l_map_bridge->saveMap("Elsas Äventyr.txt");
 }
 
 void Map::Draw(sf::RenderWindow* window) {
@@ -28,34 +38,65 @@ void Map::Draw(sf::RenderWindow* window) {
 }
 
 void Map::Instantiate() {
-	int blockSizeX = this->gameWidth / this->nrBlocksWidth;
-	int blockSizeY = this->gameHeight / this->nrBlocksHeight;
+	blockGridSize = l_map_bridge->getBlockDensity();
+	//this->mapBlocks.reserve(blockGridSize.x*blockGridSize.y);
+	BlockType blockType;
+	std::string blockTexture;
 
-	for (unsigned int x = 0; x < this->nrBlocksWidth; x++) {
-		for (unsigned int y = 0; y < this->nrBlocksHeight; y++) {
-			this->mapBlocks.push_back(new Block(sf::Vector2i(x, y), BlockType::DIRT, y % 2 == 0 ? "Dirt.png" : "Grass.png"));
-			this->mapBlocks.at(nrBlocksHeight*x + y)->setScreenPos(this->gameWidth, this->gameHeight, this->nrBlocksWidth, this->nrBlocksHeight);
+	for (unsigned int x = 0; x < this->blockGridSize.x; x++) {
+		for (unsigned int y = 0; y < this->blockGridSize.y; y++) {
+
+			blockType = l_map_bridge->getBlockType(x, y);
+			blockTexture = l_map_bridge->getBlockTexture(x, y);
+			this->mapBlocks.push_back(new Block(sf::Vector2i(x, y), BlockType::DIRT, "./res/Dirt.png"));
+			this->mapBlocks.back()->setScreenPos(this->gameWidth, this->gameHeight, this->blockGridSize.x, this->blockGridSize.y);
+
+			loadLuaBlockAt(mapBlocks.size() - 1);
 		}
 	}
 }
 
+void Map::changeLuaBlockAt(const int & index, BlockType bType) {
+	sf::Vector2i pos = this->mapBlocks.at(index)->getPos();
+
+	l_map_bridge->setBlock(pos.x, pos.y, bType);
+
+}
+
+void Map::loadLuaBlockAt(const int & index) {
+	BlockType blockType;
+	std::string blockTexture;
+	sf::Vector2i pos = this->mapBlocks.at(index)->getPos();
+
+	blockType = l_map_bridge->getBlockType(pos.x, pos.y);
+	blockTexture = l_map_bridge->getBlockTexture(pos.x, pos.y);
+
+	this->mapBlocks.at(index)->editBlock(blockType, blockTexture);
+	//this->mapBlocks.back()->setScreenPos(this->gameWidth, this->gameHeight, this->blockGridSize.x, this->blockGridSize.y);
+}
+
 void Map::changeMapAt(sf::Keyboard::Key key, sf::Vector2i mousePos) {
 	system("cls");
+	for (unsigned int i = 0; i < this->mapBlocks.size(); i++) {
+		if (this->mapBlocks.at(i)->isInside(mousePos)) {
 
-	for (unsigned int x = 0; x < this->nrBlocksWidth; x++) {
-		for (unsigned int y = 0; y < this->nrBlocksHeight; y++) {
-			if (this->mapBlocks.at(nrBlocksHeight*x+y)->getRect().contains(mousePos)) {
-				printf("Inside!!!: %i || Relative to x:%i , y: %i", (x + 1)*y, x, y);
-				break;
-			}
-			
+			changeLuaBlockAt(i, BlockType::GRASS);
+			loadLuaBlockAt(i);
+
+
+			printf("Inside!!!: || Relative to x:%i , y: %i", this->mapBlocks.at(i)->getPos().x, this->mapBlocks.at(i)->getPos().y);
 		}
 	}
-	//for (int i = 0; i < this->mapBlocks.size(); i++) {
-	//	if (this->mapBlocks.at(i)->getRect().contains(mousePos)) {
-	//		//Lua set at position
-	//		printf("Inside!!!: %i || Relative to x:%i , y: %i", i, 
-	//		break;
-	//	}
-	//}
+}
+
+void Map::Reload() {
+	if (this->mapBlocks.size() > 0) {
+		for (unsigned int i = 0; i < this->mapBlocks.size(); i++) {
+			delete mapBlocks.at(i);
+		}
+
+		this->mapBlocks.clear();
+	}
+
+	Instantiate();
 }

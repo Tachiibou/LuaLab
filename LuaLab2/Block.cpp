@@ -33,7 +33,7 @@ void Block::setScreenPos(const int& windowX, const int& windowY, const int &nrBL
 
 void Block::assignTexture(std::string name) {
 	
-	if (!this->m_texture->loadFromFile("res/" + name)) {
+	if (!this->m_texture->loadFromFile( name)) {
 		printf("Couldnt load textur: %s", name);
 	}
 
@@ -61,4 +61,14 @@ sf::IntRect Block::getRect() const {
 
 bool Block::isInside(sf::Vector2i pos) const {
 	return this->m_rect.contains(pos);
+}
+
+sf::Vector2i Block::getPos() const {
+	return this->m_position;
+}
+
+void Block::editBlock(BlockType type, std::string textureName) {
+	this->assignTexture(textureName);
+	this->m_sprite->setTexture(*this->m_texture);
+	this->m_bType = type;
 }

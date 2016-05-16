@@ -2,7 +2,6 @@
 #include "lua.hpp"
 #include "SFML\Graphics.hpp"
 #include <vector>
-#include "TextureHandler.h"
 #include "Map.h"
 
 using namespace std;
@@ -15,8 +14,8 @@ private:
 	sf::Event event;
 	sf::RenderWindow* window;
 	void handleEvents();
-	TextureHandler* textureHandler;
 	Map* map;
+	
 public:
 	GameMain();
 	~GameMain();

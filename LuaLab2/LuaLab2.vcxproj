@@ -159,12 +159,14 @@
     <ClInclude Include="lua.hpp" />
     <ClInclude Include="luaconf.h" />
     <ClInclude Include="lualib.h" />
+    <ClInclude Include="LuaMapBridge.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="TextureHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="LuaMapBridge.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="TextureHandler.cpp" />

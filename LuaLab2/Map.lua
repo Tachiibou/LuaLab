@@ -1,10 +1,14 @@
 
 Map = {}
-width = -1
-height = -1
+width = 100
+height = 200
+
+textureExtension = "./res/"
+
+print("Herruuu, elsa bajs")
 
 Block = {type = "dirt",
-		texture = "dirt.png",
+		texture = textureExtension.."Dirt.png",
 		x = 0,
 		y = 0}
 
@@ -20,36 +24,36 @@ end
 -- BLOCK FUNCTIONS START
 Block.isGrass = function(self)
 	self.type = "grass"
-	self.texture = "grass.png"
+	self.texture =textureExtension.. "Grass.png"
 
 end
 
 Block.isDirt = function(self)
 	self.type = "dirt"
-	self.texture = "dirt.png"
+	self.texture =textureExtension.. "Dirt.png"
 
 end
 
 Block.isSpawn = function(self)
 	self.type = "spawn"
-	self.texture = "spawn.png"
+	self.texture =textureExtension.. "Spawn.png"
 
 end
 
 Block.isWall = function(self)
 	self.type = "wall"
-	self.texture = "wall.png"
+	self.texture =textureExtension.. "Wall.png"
 
 end
 
 Block.isPoint = function(self)
 	self.type = "point"
-	self.texture = "point.png"
+	self.texture = textureExtension.."Point.png"
 end
 
 Block.isGoal = function(self)
 	self.type = "goal"
-	self.texture = "goal.png"
+	self.texture =textureExtension.. "Goal.png"
 end
 
 Block.setPos = function (self, x , y)

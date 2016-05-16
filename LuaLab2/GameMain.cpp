@@ -11,6 +11,18 @@ GameMain::GameMain()
 	this->map = new Map();
 
 	this->map->Instantiate();
+
+
+
+	//l_map_bridge->setBlock(3, 3, BlockType::WALL);
+
+	//type = l_map_bridge->getBlockType(4, 4);
+	//type2 = l_map_bridge->getBlockTexture(4, 4);
+
+	//l_map_bridge->saveMap("Elsas Äventyr2.txt");
+
+
+	int k = 0;
 }
 
 
@@ -59,13 +71,15 @@ void GameMain::handleEvents() {
 
 		if (event.type == sf::Event::KeyPressed)
 		{
-			if (event.key.code == sf::Keyboard::Num1 ||
-				event.key.code == sf::Keyboard::Num2 ||
-				event.key.code == sf::Keyboard::Num3 ||
-				event.key.code == sf::Keyboard::Num4) {
+			this->map->changeMapAt(event.key.code, getMousePos());
+			//if (event.key.code == sf::Keyboard::Num1 ||
+			//	event.key.code == sf::Keyboard::Num2 ||
+			//	event.key.code == sf::Keyboard::Num3 ||
+			//	event.key.code == sf::Keyboard::Num4) {
 
-				this->map->changeMapAt(event.key.code, getMousePos());
-			}
+			//	
+			//}
 		}
 	}
 }
+
