@@ -14,6 +14,9 @@ Map::Map()
 
 Map::~Map()
 {
+	for (unsigned int i = 0; i < mapBlocks.size();i++){
+		delete this->mapBlocks.at(i);
+	}
 }
 
 void Map::Draw(sf::RenderWindow* window) {
@@ -30,8 +33,8 @@ void Map::Instantiate() {
 
 	for (unsigned int x = 0; x < this->nrBlocksWidth; x++) {
 		for (unsigned int y = 0; y < this->nrBlocksHeight; y++) {
-			this->mapBlocks.push_back(new Block(sf::IntRect(x*blockSizeX, y*blockSizeY, blockSizeX, blockSizeY), BlockType::DIRT, y%2==0?"Dirt.png":"Grass.png"));
-
+			this->mapBlocks.push_back(new Block(sf::Vector2i(x, y), BlockType::DIRT, y % 2 == 0 ? "Dirt.png" : "Grass.png"));
+			this->mapBlocks.at(nrBlocksHeight*x + y)->setScreenPos(this->gameWidth, this->gameHeight, this->nrBlocksWidth, this->nrBlocksHeight);
 		}
 	}
 }

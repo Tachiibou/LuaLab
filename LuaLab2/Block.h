@@ -15,26 +15,29 @@ private:
 	sf::Sprite* m_sprite;
 	sf::Texture* m_texture;
 
-	int m_positionX;
-	int m_positionY;
+	sf::Vector2i m_position;
 	sf::IntRect m_rect;
 
 	BlockType m_bType;
 
 public:
 	Block();
-	Block(sf::IntRect rect, BlockType type, std::string textureName);
+	Block(sf::Vector2i pos, BlockType type, std::string textureName);
 	
 	~Block();
 
-	void setPosition(const int& x, const int& y);
+	void setPosition(const sf::Vector2i& pos);
+
+	void setScreenPos(const int& windowX, const int& windowY, const int &nrBLockX, const int&nrBlockY);
 	void assignTexture(std::string name);
 
-	void CrateBlockAt(sf::IntRect rect, BlockType type, std::string textureName);
+	void CrateBlockAt(sf::Vector2i pos, BlockType type, std::string textureName);
 
 	sf::Sprite* getSprite() const;
 
 	sf::IntRect getRect() const;
+
+	bool isInside(sf::Vector2i pos) const;
 };
 
 #endif

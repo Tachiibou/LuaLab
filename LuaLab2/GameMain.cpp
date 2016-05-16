@@ -17,6 +17,7 @@ GameMain::GameMain()
 GameMain::~GameMain()
 {
 	delete this->window;
+	delete this->map;
 }
 
 void GameMain::Update(const float & dt)
