@@ -45,6 +45,9 @@
     <ClInclude Include="LuaMapBridge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LuaMapBridge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

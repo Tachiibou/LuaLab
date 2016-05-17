@@ -39,8 +39,10 @@ void GameMain::Update(const float & dt)
 {
 	doFPS(dt);
 
+<<<<<<< HEAD
 	//if edit mode
 	this->map->updateMouseRectangle(getMousePos());
+=======
 	switch (this->gameState)
 	{
 	case GAME_MENU:
@@ -54,6 +56,7 @@ void GameMain::Update(const float & dt)
 	default:
 		break;
 	}
+>>>>>>> 4270112e2bfda734f984bbc98ce59f5fd328c462
 }
 
 void GameMain::Draw() {

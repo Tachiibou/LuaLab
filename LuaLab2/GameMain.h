@@ -3,6 +3,7 @@
 #include "SFML\Graphics.hpp"
 #include <vector>
 #include "Map.h"
+#include "Menu.h"
 
 
 
@@ -12,6 +13,7 @@ class GameMain
 private:
 	int window_width;
 	int window_height;
+	GameState gameState = GAME_MENU;
 
 	sf::Event event;
 	sf::RenderWindow* window;
@@ -19,6 +21,7 @@ private:
 	float lastTime;
 	void handleEvents();
 	Map* map;
+	Menu* menu;
 
 	float FPS;
 	float deltaTime;
