@@ -9,6 +9,7 @@ GameMain::GameMain()
 
 	//this->textureHandler = new TextureHandler();
 	this->map = new Map();
+	this->menu = new Menu(this->window_width, this->window_height);
 
 	this->map->Instantiate();
 
@@ -31,16 +32,46 @@ GameMain::~GameMain()
 {
 	delete this->window;
 	delete this->map;
+	delete this->menu;
 }
 
 void GameMain::Update(const float & dt)
 {
 	doFPS(dt);
+
+	switch (this->gameState)
+	{
+	case GAME_MENU:
+		break;
+	case GAME_GAME:
+		break;
+	case GAME_EDIT:
+		break;
+	case GAME_EXIT:
+		break;
+	default:
+		break;
+	}
 }
 
 void GameMain::Draw() {
 	window->clear();
-	this->map->Draw(this->window);
+	switch (this->gameState)
+	{
+	case GAME_MENU:
+		this->menu->Draw(this->window);
+		break;
+	case GAME_GAME:
+		break;
+	case GAME_EDIT:
+		this->map->Draw(this->window);
+		break;
+	case GAME_EXIT:
+		window->close();
+		break;
+	default:
+		break;
+	}
 	
 	window->display();
 }
@@ -83,7 +114,21 @@ void GameMain::handleEvents() {
 
 		if (event.type == sf::Event::KeyPressed)
 		{
-			this->map->changeMapAt(event.key.code, getMousePos());
+			switch (this->gameState)
+			{
+			case GAME_MENU:
+				this->menu->Update(event.key.code, this->gameState);
+				break;
+			case GAME_GAME:
+				break;
+			case GAME_EDIT:
+				this->map->changeMapAt(event.key.code, getMousePos());
+				break;
+			case GAME_EXIT:
+				break;
+			default:
+				break;
+			}
 			//if (event.key.code == sf::Keyboard::Num1 ||
 			//	event.key.code == sf::Keyboard::Num2 ||
 			//	event.key.code == sf::Keyboard::Num3 ||

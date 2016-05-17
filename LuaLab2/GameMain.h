@@ -3,14 +3,7 @@
 #include "SFML\Graphics.hpp"
 #include <vector>
 #include "Map.h"
-
-enum GameState
-{
-	GAME_MENU,
-	GAME_GAME,
-	GAME_EDIT,
-	GAME_NUMSTATE
-};
+#include "Menu.h"
 
 
 
@@ -28,6 +21,7 @@ private:
 	float lastTime;
 	void handleEvents();
 	Map* map;
+	Menu* menu;
 
 	float FPS;
 	float deltaTime;
