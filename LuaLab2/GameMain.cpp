@@ -1,5 +1,5 @@
 #include "GameMain.h"
-
+#include "player.h"
 
 
 GameMain::GameMain()
@@ -23,8 +23,37 @@ GameMain::GameMain()
 
 	//l_map_bridge->saveMap("Elsas Äventyr2.txt");
 
-
+	//player = new Player();
 	int k = 0;
+
+	lua_State* state = luaL_newstate();
+
+	luaL_openlibs(state);
+
+	luaL_newmetatable(state, "MetaPlayer");
+	luaL_Reg sPlayerReg[] = {
+		{ "create", createPlayer },
+		{ "testing", printTest },
+		{ NULL, NULL }
+	};
+
+	luaL_setfuncs(state, sPlayerReg, 0);
+
+	lua_pushvalue(state, -1);
+
+	lua_setfield(state, -1, "__index");
+
+	lua_setglobal(state, "player");
+
+
+	int error = luaL_loadfile(state, "Player.lua") ||
+		lua_pcall(state, 0, 0, 0);
+	
+
+	Player* player = new Player();
+	//this->window->draw(*getPlayer(state, 1)->getSprite());
+
+	lua_close(state);
 }
 
 
@@ -40,7 +69,7 @@ void GameMain::Update(const float & dt)
 	doFPS(dt);
 
 	//if edit mode
-	this->map->updateMouseRectangle(getMousePos());
+	
 	switch (this->gameState)
 	{
 	case GAME_MENU:
@@ -48,6 +77,7 @@ void GameMain::Update(const float & dt)
 	case GAME_GAME:
 		break;
 	case GAME_EDIT:
+		this->map->updateMouseRectangle(getMousePos());
 		break;
 	case GAME_EXIT:
 		break;
@@ -64,9 +94,11 @@ void GameMain::Draw() {
 		this->menu->Draw(this->window);
 		break;
 	case GAME_GAME:
+		this->map->GameDraw(this->window);
+		
 		break;
 	case GAME_EDIT:
-		this->map->Draw(this->window);
+		this->map->EditDraw(this->window);
 		break;
 	case GAME_EXIT:
 		window->close();

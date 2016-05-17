@@ -162,6 +162,8 @@
     <ClInclude Include="LuaMapBridge.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="player2.h" />
     <ClInclude Include="TextureHandler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Map.lua" />
+    <None Include="Player.lua" />
     <None Include="script.lua" />
     <None Include="script2.lua" />
   </ItemGroup>

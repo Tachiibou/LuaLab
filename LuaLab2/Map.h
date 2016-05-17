@@ -1,11 +1,11 @@
 #ifndef MAP_H
 #define MAP_H
 
-
-
 #include "Block.h"
 #include <vector>
 #include "LuaMapBridge.h"
+#include "Menu.h"
+
 class Map
 {
 private:
@@ -27,7 +27,8 @@ public:
 	Map();
 	~Map();
 
-	void Draw(sf::RenderWindow* window);
+	void GameDraw(sf::RenderWindow* window);
+	void EditDraw(sf::RenderWindow* window);
 	void Instantiate();
 
 	void changeMapAt(sf::Keyboard::Key key, sf::Vector2i mousePos);

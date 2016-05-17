@@ -6,8 +6,6 @@
 #include <string>
 
 
-
-
 class LuaMapBridge
 {
 private:

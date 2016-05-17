@@ -48,6 +48,12 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -82,5 +88,6 @@
     <None Include="Map.lua">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Player.lua" />
   </ItemGroup>
 </Project>

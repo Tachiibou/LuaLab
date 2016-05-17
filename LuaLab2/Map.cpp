@@ -40,14 +40,15 @@ Map::~Map()
 	delete l_map_bridge;
 }
 
-void Map::Draw(sf::RenderWindow* window) {
-
-
-	
+void Map::GameDraw(sf::RenderWindow* window) {
 	for (int i = 0; i < this->mapBlocks.size(); i++) {
 		window->draw(*this->mapBlocks.at(i)->getSprite());
 	}
+	
+}
 
+void Map::EditDraw(sf::RenderWindow* window) {
+	GameDraw(window);
 	//if edit mode
 	window->draw(mouseRectangle);
 }
