@@ -9,13 +9,13 @@ Map::Map()
 
 	l_map_bridge = new LuaMapBridge();
 
-	//l_map_bridge->createMap(50, 50);
-	l_map_bridge->loadMap("Elsas Äventyr.txt");
+	l_map_bridge->createMap(2, 2);
+	//l_map_bridge->loadMap("Elsas Äventyr.txt");
 
 	
 	
-	BlockType type = l_map_bridge->getBlockType(4, 4);
-	std::string type2 = l_map_bridge->getBlockTexture(4, 4);
+	//BlockType type = l_map_bridge->getBlockType(4, 4);
+	//std::string type2 = l_map_bridge->getBlockTexture(4, 4);
 
 	int k = 0;
 }
@@ -26,7 +26,9 @@ Map::~Map()
 	for (unsigned int i = 0; i < mapBlocks.size();i++){
 		delete this->mapBlocks.at(i);
 	}
-	l_map_bridge->saveMap("Elsas Äventyr.txt");
+	//l_map_bridge->saveMap("Elsas Äventyr.txt");
+
+	delete l_map_bridge;
 }
 
 void Map::Draw(sf::RenderWindow* window) {

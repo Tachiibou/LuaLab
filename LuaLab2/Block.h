@@ -3,6 +3,8 @@
 #include <map>
 #include "SFML\Graphics.hpp"
 
+
+
 enum BlockType {
 	GRASS,
 	DIRT,
@@ -18,7 +20,7 @@ class Block
 {
 private:
 	sf::Sprite* m_sprite;
-	sf::Texture* m_texture;
+	sf::Texture m_texture;
 
 	sf::Vector2i m_position;
 	sf::IntRect m_rect;

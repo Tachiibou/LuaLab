@@ -4,7 +4,6 @@
 
 Block::Block(sf::Vector2i pos, BlockType type, std::string textureName)
 {
-	this->m_texture = new sf::Texture();
 	CrateBlockAt(pos, type, textureName);
 }
 
@@ -16,7 +15,6 @@ Block::Block() {
 Block::~Block()
 {
 	delete this->m_sprite;
-	delete this->m_texture;
 }
 
 void Block::setPosition(const sf::Vector2i& pos) {
@@ -33,9 +31,12 @@ void Block::setScreenPos(const int& windowX, const int& windowY, const int &nrBL
 
 void Block::assignTexture(std::string name) {
 	
-	if (!this->m_texture->loadFromFile( name)) {
+	
+	if (!this->m_texture.loadFromFile( name)) {
 		printf("Couldnt load textur: %s", name);
 	}
+
+	
 
 }
 
@@ -45,7 +46,7 @@ sf::Sprite* Block::getSprite() const {
 
 void Block::CrateBlockAt(sf::Vector2i pos, BlockType type, std::string textureName) {
 	this->assignTexture(textureName);
-	this->m_sprite = new sf::Sprite(*this->m_texture);
+	this->m_sprite = new sf::Sprite(this->m_texture);
 	//this->m_sprite->setTextureRect(rect);
 	
 	this->m_position = pos;
@@ -69,6 +70,6 @@ sf::Vector2i Block::getPos() const {
 
 void Block::editBlock(BlockType type, std::string textureName) {
 	this->assignTexture(textureName);
-	this->m_sprite->setTexture(*this->m_texture);
+	this->m_sprite->setTexture(this->m_texture);
 	this->m_bType = type;
 }
