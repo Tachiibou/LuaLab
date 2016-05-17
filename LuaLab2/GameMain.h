@@ -4,6 +4,14 @@
 #include <vector>
 #include "Map.h"
 
+enum GameState
+{
+	GAME_MENU,
+	GAME_GAME,
+	GAME_EDIT,
+	GAME_NUMSTATE
+};
+
 
 
 using namespace std;
@@ -12,6 +20,7 @@ class GameMain
 private:
 	int window_width;
 	int window_height;
+	GameState gameState = GAME_MENU;
 
 	sf::Event event;
 	sf::RenderWindow* window;
