@@ -14,11 +14,15 @@ private:
 	int gameWidth, gameHeight;
 	std::vector<Block*> mapBlocks;
 	LuaMapBridge* l_map_bridge;
+	sf::Vector2f blockSize;
+	sf::Vector2i numBlocks;
 
 	void Reload();
 	
 	void changeLuaBlockAt(const int & index, BlockType bType);
 	void loadLuaBlockAt(const int & index);
+
+	sf::RectangleShape mouseRectangle;
 public:
 	Map();
 	~Map();
@@ -27,6 +31,8 @@ public:
 	void Instantiate();
 
 	void changeMapAt(sf::Keyboard::Key key, sf::Vector2i mousePos);
+
+	void updateMouseRectangle(sf::Vector2i mousePos);
 };
 
 #endif

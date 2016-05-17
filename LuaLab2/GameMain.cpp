@@ -36,6 +36,9 @@ GameMain::~GameMain()
 void GameMain::Update(const float & dt)
 {
 	doFPS(dt);
+
+	//if edit mode
+	this->map->updateMouseRectangle(getMousePos());
 }
 
 void GameMain::Draw() {
@@ -92,6 +95,9 @@ void GameMain::handleEvents() {
 			//	
 			//}
 		}
+
+		
+		
 	}
 }
 

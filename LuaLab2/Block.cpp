@@ -24,9 +24,12 @@ void Block::setPosition(const sf::Vector2i& pos) {
 
 void Block::setScreenPos(const int& windowX, const int& windowY, const int &nrBLockX, const int&nrBlockY) {
 	this->m_rect =sf::IntRect((windowX / nrBLockX)*this->m_position.x, (windowY/ nrBlockY)*this->m_position.y, windowX / nrBLockX, windowY / nrBlockY);
-
-	this->m_sprite->setTextureRect(m_rect);
+	
+	//this->m_sprite->setTextureRect(m_rect);
 	this->m_sprite->setPosition(m_rect.left, m_rect.top);
+	float scaleX = (float)m_rect.width / (float)this->m_texture.getSize().x;
+	float scaleY = (float)m_rect.height / (float)this->m_texture.getSize().y;
+	this->m_sprite->setScale(sf::Vector2f(scaleX, scaleY));
 }
 
 void Block::assignTexture(std::string name) {
@@ -51,6 +54,7 @@ void Block::CrateBlockAt(sf::Vector2i pos, BlockType type, std::string textureNa
 	
 	this->m_position = pos;
 
+
 	this->m_bType = type;
 
 	//this->m_rect = this->m_sprite->getTextureRect();
@@ -70,6 +74,7 @@ sf::Vector2i Block::getPos() const {
 
 void Block::editBlock(BlockType type, std::string textureName) {
 	this->assignTexture(textureName);
+	
 	this->m_sprite->setTexture(this->m_texture);
 	this->m_bType = type;
 }
