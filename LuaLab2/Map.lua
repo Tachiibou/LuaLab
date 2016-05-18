@@ -5,7 +5,6 @@ height = 200
 
 textureExtension = "./res/"
 
-print("Herruuu, elsa bajs")
 
 Block = {type = "dirt",
 		texture = textureExtension.."Dirt.png",
@@ -24,36 +23,36 @@ end
 -- BLOCK FUNCTIONS START
 Block.isGrass = function(self)
 	self.type = "grass"
-	self.texture =textureExtension.. "Grass.png"
+	self.texture =textureExtension.. "Grass_double.jpg"
 
 end
 
 Block.isDirt = function(self)
 	self.type = "dirt"
-	self.texture =textureExtension.. "Dirt.png"
+	self.texture =textureExtension.. "dirt2.png"
 
 end
 
 Block.isSpawn = function(self)
 	self.type = "spawn"
-	self.texture =textureExtension.. "Spawn.png"
+	self.texture =textureExtension.. "spawn.jpg"
 
 end
 
 Block.isWall = function(self)
 	self.type = "wall"
-	self.texture =textureExtension.. "Wall.png"
+	self.texture =textureExtension.. "wall.jpg"
 
 end
 
 Block.isPoint = function(self)
 	self.type = "point"
-	self.texture = textureExtension.."Point.png"
+	self.texture = textureExtension.."pizza.jpg"
 end
 
 Block.isGoal = function(self)
 	self.type = "goal"
-	self.texture =textureExtension.. "Goal.png"
+	self.texture =textureExtension.. "goal.jpg"
 end
 
 Block.setPos = function (self, x , y)
@@ -155,32 +154,33 @@ end
 
 function LoadMap(name)
 	local file = io.open(name,"rb")
-	local x = 0
-	local y = 0
-	local walls = 0
-	local a = file:read("*number") -- width
-	local b = file:read("*number") -- height
-	local c = file:read("*line") -- need to read this to change line for some reason, this is NIL dont know why
+	if file == nil then CreateMap(12,8)
+	else
+		local x = 0
+		local y = 0
+		local walls = 0
+		local a = file:read("*number") -- width
+		local b = file:read("*number") -- height
+		local c = file:read("*line") -- need to read this to change line for some reason, this is NIL dont know why
 
-	CreateMap(a,b) -- create an empty map
-	print(a,b,c)
+		CreateMap(a,b) -- create an empty map
 
-	while true do
-		line = file:read("*line")
-		if line == nil then break end -- end loop
+		while true do
+			line = file:read("*line")
+			if line == nil then break end -- end loop
 
-		if (line.find(line,"dirt")) then SetDirt(x,y) end
-		if (line.find(line,"wall")) then SetWall(x,y) end
-		if (line.find(line,"grass")) then SetGrass(x,y) end
-		if (line.find(line,"goal")) then SetGoal(x,y) end
-		if (line.find(line,"point")) then SetPoint(x,y) end
-		if (line.find(line,"spawn")) then SetSpawn(x,y) end
+			if (line.find(line,"dirt")) then SetDirt(x,y) end
+			if (line.find(line,"wall")) then SetWall(x,y) end
+			if (line.find(line,"grass")) then SetGrass(x,y) end
+			if (line.find(line,"goal")) then SetGoal(x,y) end
+			if (line.find(line,"point")) then SetPoint(x,y) end
+			if (line.find(line,"spawn")) then SetSpawn(x,y) end
 
-		y = y + 1
+			y = y + 1
 
-		if y >= height then x = x + 1; y = 0 end
+			if y >= height then x = x + 1; y = 0 end
+		end
 	end
-	print ("we found " .. walls .. " walls.")
 	file:close()
 
 	

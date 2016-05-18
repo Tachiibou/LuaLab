@@ -77,19 +77,23 @@ Menu::Menu(int width, int height)
 	this->game.setFont(this->font);
 	this->edit.setFont(this->font);
 	this->exit.setFont(this->font);
+	this->score.setFont(this->font);
 
 	this->game.setString("Game");
 	this->edit.setString("Edit");
 	this->exit.setString("Exit");
+	this->setScore(0.0f);
 
 	this->game.setColor(sf::Color::Red);
 	this->edit.setColor(sf::Color::Green);
 	this->exit.setColor(sf::Color::Magenta);
+	this->score.setColor(sf::Color::Yellow);
 
 	float calcX = (this->width / 2);
 	this->game.setPosition(calcX - this->game.getLocalBounds().width,100);
 	this->edit.setPosition(calcX - this->game.getLocalBounds().width,150);
 	this->exit.setPosition(calcX - this->game.getLocalBounds().width,200);
+	this->score.setPosition(calcX - this->game.getLocalBounds().width, 500);
 
 	this->updateText();
 }
@@ -104,6 +108,7 @@ void Menu::Draw(sf::RenderWindow* window)
 	window->draw(this->game);
 	window->draw(this->edit);
 	window->draw(this->exit);
+	window->draw(this->score);
 }
 
 void Menu::Update(sf::Keyboard::Key key, GameState& state)
@@ -122,4 +127,14 @@ void Menu::Update(sf::Keyboard::Key key, GameState& state)
 		break;
 	}
 	this->updateText();
+}
+
+void Menu::setScore(float score)
+{
+	this->score.setString("Highscore: " + std::to_string(score));
+}
+
+sf::Font Menu::getFont()
+{
+	return this->font;
 }

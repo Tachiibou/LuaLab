@@ -19,7 +19,7 @@ enum BlockType {
 class Block
 {
 private:
-	sf::Sprite* m_sprite;
+	sf::Sprite m_sprite;
 	sf::Texture m_texture;
 
 	sf::Vector2i m_position;
@@ -40,7 +40,7 @@ public:
 
 	void CrateBlockAt(sf::Vector2i pos, BlockType type, std::string textureName);
 
-	sf::Sprite* getSprite() const;
+	sf::Sprite getSprite() const;
 
 	sf::IntRect getRect() const;
 

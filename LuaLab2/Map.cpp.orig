@@ -9,16 +9,35 @@ Map::Map(LuaMapBridge* l_map_bridge)
 	//l_map_bridge = new LuaMapBridge();
 
 	//l_map_bridge->createMap(12, 8);
+<<<<<<< HEAD
+
+	l_map_bridge->loadMap("Elsas Äventyr.txt");
+	this->numBlocks = l_map_bridge->getBlockDensity();
+	
+
+	this->blockSize = sf::Vector2f(float(this->gameWidth) / float(numBlocks.x), (float)this->gameHeight / (float)numBlocks.y);
+	
+	
 	
 
 	
+	//this->mouseRectangle = sf::RectangleShape(sf::Vector2f(120, 50));
+	this->mouseRectangle.setSize(this->blockSize);
+	this->mouseRectangle.setOutlineThickness((this->gameWidth / (this->numBlocks.x / this->numBlocks.y))/400);
 	
+	this->mouseRectangle.setOutlineColor(sf::Color::Black);
+	this->mouseRectangle.setPosition(sf::Vector2f(0, 0));
+	this->mouseRectangle.setFillColor(sf::Color::Transparent);
+	int k = 0;
+=======
+>>>>>>> bcc2ee139fc4af497566f57142c2f3ba54f25474
 
 }
 
 
 Map::~Map()
 {
+	l_map_bridge->saveMap("Elsas Äventyr.txt");
 	for (unsigned int i = 0; i < mapBlocks.size();i++){
 		delete this->mapBlocks.at(i);
 	}
@@ -32,7 +51,7 @@ Map::~Map()
 
 void Map::GameDraw(sf::RenderWindow* window) {
 	for (int i = 0; i < this->mapBlocks.size(); i++) {
-		window->draw(this->mapBlocks.at(i)->getSprite());
+		window->draw(*this->mapBlocks.at(i)->getSprite());
 	}
 
 	
@@ -76,20 +95,33 @@ void Map::update(int x, int y)
 	switch (this->l_map_bridge->getBlockType(x, y))
 	{
 	case GRASS:
+<<<<<<< HEAD
 		//this->l_map_bridge->setBlock(x, y, DIRT);
-		//this->loadLuaBlockAt(index);
+		//this->loadLuaBlockAt(kasdf);
 		break;
 	case DIRT:
 		//this->l_map_bridge->setBlock(x, y, GRASS);
-		//this->loadLuaBlockAt(index);
+		//this->loadLuaBlockAt(kasdf);
+=======
+		this->l_map_bridge->setBlock(x, y, DIRT);
+		this->loadLuaBlockAt(index);
+		break;
+	case DIRT:
+		this->l_map_bridge->setBlock(x, y, GRASS);
+		this->loadLuaBlockAt(index);
+>>>>>>> bcc2ee139fc4af497566f57142c2f3ba54f25474
 		break;
 	case SPAWN:
 		break;
 	case WALL:
 		break;
 	case POINT:
+<<<<<<< HEAD
+		//this->l_map_bridge->setBlock(x,y,GRASS);
+=======
 		this->l_map_bridge->setBlock(x,y,GRASS);
 		this->loadLuaBlockAt(index);
+>>>>>>> bcc2ee139fc4af497566f57142c2f3ba54f25474
 		break;
 	case GOAL:
 		// WIN
@@ -102,9 +134,13 @@ void Map::update(int x, int y)
 	
 }
 
+void Map::reload()
+{
+
+}
 
 void Map::Instantiate() {
-	l_map_bridge->loadMap(MAP_NAME);
+	l_map_bridge->loadMap("map1.txt");
 
 
 	this->numBlocks = l_map_bridge->getBlockDensity();
@@ -131,9 +167,9 @@ void Map::Instantiate() {
 			blockType = l_map_bridge->getBlockType(x, y);
 			blockTexture = l_map_bridge->getBlockTexture(x, y);
 			this->mapBlocks.push_back(new Block(sf::Vector2i(x, y), BlockType::DIRT, "./res/Dirt.png"));
+			this->mapBlocks.back()->setScreenPos(this->blockSize);
 
 			loadLuaBlockAt(mapBlocks.size() - 1);
-			//this->mapBlocks.back()->setScreenPos(this->blockSize);
 		}
 	}
 }
@@ -154,7 +190,6 @@ void Map::loadLuaBlockAt(const int & index) {
 	blockTexture = l_map_bridge->getBlockTexture(pos.x, pos.y);
 
 	this->mapBlocks.at(index)->editBlock(blockType, blockTexture);
-	this->mapBlocks.at(index)->setScreenPos(this->blockSize);
 	//this->mapBlocks.back()->setScreenPos(this->gameWidth, this->gameHeight, this->blockGridSize.x, this->blockGridSize.y);
 }
 

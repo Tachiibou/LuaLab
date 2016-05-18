@@ -20,6 +20,7 @@ private:
 	sf::Vector2f blockSize;
 	sf::Vector2i numBlocks;
 
+	void Reload();
 	
 	void changeLuaBlockAt(const int & index, BlockType bType);
 	void loadLuaBlockAt(const int & index);
@@ -43,9 +44,11 @@ public:
 
 	void update(int x, int y);
 
-	void Reload();
-
+<<<<<<< HEAD
 	sf::Vector2i getSpawnPoint();
+=======
+	void reload();
+>>>>>>> bcc2ee139fc4af497566f57142c2f3ba54f25474
 
 	sf::Vector2f getBlockSize();
 };

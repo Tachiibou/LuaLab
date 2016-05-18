@@ -26,9 +26,27 @@ GameMain::GameMain()
 
 	//player = new Player();
 	instantiatePlayer();
-	saveHighScore(1337);
+	this->setPlayerSpawn();
 	loadHighScore();
-	resetHighScore();
+	this->menu->setScore(this->highSscore);
+	//saveHighScore(1337);
+	//loadHighScore();
+	//
+	if (!this->font.loadFromFile("arial.ttf"))
+	{
+		std::cout << "FAIL to load font\n";
+	}
+
+	this->scoreText.setFont(this->font);
+	this->scoreText.setColor(sf::Color(255,255,200,180));
+	this->scoreText.setPosition(this->window_width / 2,0);
+	this->UpdateText();
+
+	this->editText.setFont(this->font);
+	this->editText.setColor(sf::Color(255, 255, 255, 200));
+	this->editText.setPosition(0, 150);
+	this->editText.setString("1. Dirt\n 2. Grass\n 3. Point\n 4. Wall\n 5. Spawn\n 6. Goal\n S. Save");
+
 }
 
 
@@ -44,7 +62,7 @@ GameMain::~GameMain()
 void GameMain::Update(const float & dt)
 {
 	doFPS(dt);
-	this->totalTime += dt;
+	
 
 	//if edit mode
 	
@@ -53,6 +71,10 @@ void GameMain::Update(const float & dt)
 	case GAME_MENU:
 		break;
 	case GAME_GAME:
+
+		this->totalTime += dt;
+		CheckWin();
+		this->UpdateText();
 		break;
 	case GAME_EDIT:
 		this->map->updateMouseRectangle(getMousePos());
@@ -62,6 +84,42 @@ void GameMain::Update(const float & dt)
 	default:
 		break;
 	}
+
+	
+}
+
+void GameMain::CheckWin() {
+	int win = 0;
+
+	lua_getglobal(playerState, "getWin");
+	lua_pcall(playerState, 0, 1, 0);
+
+	win = lua_tonumber(this->playerState, -1);
+	lua_pop(this->playerState, 1);
+
+	if (win) {
+		float cScore = this->getPlayerScore();
+		if (cScore > this->highSscore) {
+			this->menu->setScore(cScore);
+			this->saveHighScore(cScore);
+		}
+
+		this->gameState = GameState::GAME_MENU;
+		this->map->Reload();
+		setPlayerSpawn();
+		this->totalTime = 0;
+		
+
+		lua_getglobal(playerState, "reset");
+		lua_pcall(playerState, 0, 0, 0);
+
+		
+	}
+}
+
+void GameMain::UpdateText()
+{
+	this->scoreText.setString("Score: " + std::to_string(this->getPlayerScore()));
 }
 
 void GameMain::Draw() {
@@ -75,9 +133,11 @@ void GameMain::Draw() {
 	case GAME_GAME:
 		this->map->GameDraw(this->window);
 		this->window->draw(TestPlayer->getSprite());
+		this->window->draw(this->scoreText);
 		break;
 	case GAME_EDIT:
 		this->map->EditDraw(this->window);
+		this->window->draw(this->editText);
 		break;
 	case GAME_EXIT:
 		window->close();
@@ -139,6 +199,14 @@ void GameMain::handleEvents() {
 				break;
 			case GAME_EDIT:
 				this->map->changeMapAt(event.key.code, getMousePos());
+				this->map->EditUpdate(event.key.code, this->gameState);
+				//Saving Game
+				if (this->gameState != GameState::GAME_EDIT) {
+					setPlayerSpawn();
+					resetHighScore();
+					this->menu->setScore(0);
+				}
+					
 				break;
 			case GAME_EXIT:
 				break;
@@ -193,7 +261,7 @@ void GameMain::movePlayer(int x, int y)
 	int moveY = TestPlayer->getPos().y + y;
 
 	if (moveX >= 0 && moveX < this->l_map_bridge->getBlockDensity().x && moveY >= 0 && moveY < this->l_map_bridge->getBlockDensity().y) {
-		this->map->update(moveX, moveY); // check if we stand on a point
+		
 
 
 		lua_getglobal(playerState, "updateMovement");
@@ -204,22 +272,10 @@ void GameMain::movePlayer(int x, int y)
 		lua_pushstring(playerState, type.c_str());
 		lua_pcall(playerState, 3, 0, 0);
 
-		if (type == "goal")
-			wonTheGame();
+
+		this->map->update(moveX, moveY); // check if we stand on a point
 
 	}
-	else
-		std::cout << "Trying to walk out of bounds \n";
-
-
-
-
-}
-
-void GameMain::wonTheGame() {
-	win = true;
-	//SaveGame();
-	this->gameState = GameState::GAME_MENU;
 }
 
 void GameMain::instantiatePlayer() {
@@ -263,18 +319,12 @@ void GameMain::instantiatePlayer() {
 	lua_pcall(playerState, 2, 0, 0);
 
 
-	//Setting spawn pos
-	lua_getglobal(playerState, "setPosition");
-	sf::Vector2i spawn = this->map->getSpawnPoint();
 
-	lua_pushnumber(playerState, spawn.x);
-	lua_pushnumber(playerState, spawn.y);
-
-	lua_pcall(playerState, 2, 0, 0);
 
 }
 
 void GameMain::saveHighScore(float points) {
+	this->highSscore = points;
 	ofstream file;
 	file.open("HighScore.txt");
 
@@ -305,7 +355,7 @@ float GameMain::getPlayerScore() {
 	lua_getglobal(playerState, "getPoints");
 	lua_pcall(playerState, 0, 1, 0);
 
-	totalPoints = lua_tonumber(this->playerState, -1);
+	totalPoints = lua_tonumber(this->playerState, -1);	
 	lua_pop(this->playerState, 1);
 
 	return totalPoints * 20 - this->totalTime * 5;
@@ -313,4 +363,15 @@ float GameMain::getPlayerScore() {
 
 void GameMain::resetHighScore() {
 	this->saveHighScore(0);
+}
+
+void GameMain::setPlayerSpawn() {
+	//Setting spawn pos
+	lua_getglobal(playerState, "setPosition");
+	sf::Vector2i spawn = this->map->getSpawnPoint();
+
+	lua_pushnumber(playerState, spawn.x);
+	lua_pushnumber(playerState, spawn.y);
+
+	lua_pcall(playerState, 2, 0, 0);
 }

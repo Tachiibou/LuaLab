@@ -14,6 +14,8 @@ using namespace std;
 class GameMain
 {
 private:
+	sf::Text scoreText, editText;
+	sf::Font font;
 	int window_width;
 	int window_height;
 	GameState gameState = GAME_MENU;
@@ -41,12 +43,15 @@ private:
 	void playerKeyEvent(sf::Keyboard::Key key);
 	void movePlayer(int x, int y);
 	bool win;
-	void wonTheGame();
 	void saveHighScore(float points);
 	void loadHighScore();
 	float highSscore;
 	float getPlayerScore();
 	void resetHighScore();
+	void setPlayerSpawn();
+
+	void CheckWin();
+	void UpdateText();
 	
 public:
 	GameMain();

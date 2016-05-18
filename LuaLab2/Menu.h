@@ -1,18 +1,11 @@
 #pragma once
 #include "SFML\Graphics.hpp"
 #include <iostream>
-
-enum GameState
-{
-	GAME_MENU,
-	GAME_GAME,
-	GAME_EDIT,
-	GAME_EXIT
-};
+#include "GameState.h"
 class Menu
 {
 private:
-	sf::Text game, exit, edit;
+	sf::Text game, exit, edit, score;
 	sf::Font font;
 	int width, height;
 	GameState menuState = GAME_GAME;
@@ -25,5 +18,7 @@ public:
 	~Menu();
 	void Draw(sf::RenderWindow* window);
 	void Update(sf::Keyboard::Key key, GameState& state);
+	void setScore(float score);
+	sf::Font getFont();
 };
 

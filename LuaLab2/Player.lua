@@ -13,7 +13,6 @@ function setPlayerSize(x, y)
 	playerSizeY = y
 
 	character:setSize(x,y)
-	character:setPos(2,2)
 end
 
 function getPlayerSizeX()
@@ -25,12 +24,12 @@ function getPlayerSizeY()
 end
 
 function updateMovement(x, y, type)
-	if type == "dirt" then print ("dirt")	character:walk(x,y)
-	elseif type == "grass" then print ("grass") character:walk(x,y)
-	elseif type == "wall" then print ("wall") 
-	elseif type == "goal" then print ("goal") win = 1
-	elseif type == "spawn" then print ("spawn") character:walk(x,y)
-	elseif type == "point" then print ("point") character:walk(x,y) points = points +1
+	if type == "dirt" then 	character:walk(x,y)
+	elseif type == "grass" then  character:walk(x,y)
+	elseif type == "wall" then 
+	elseif type == "goal" then  win = 1
+	elseif type == "spawn" then  character:walk(x,y)
+	elseif type == "point" then  character:walk(x,y) points = points +1
 	else
 		print("WRONG TYPE BISH")end
 end
@@ -41,6 +40,11 @@ end
 
 function getPoints()
 	return points
+end
+
+function reset()
+	win = 0
+	points = 0
 end
 
 function setPosition(x, y)
