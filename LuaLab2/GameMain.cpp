@@ -190,7 +190,6 @@ void GameMain::movePlayer(int x, int y)
 	int moveY = TestPlayer->getPos().y + y;
 
 	if (moveX >= 0 && moveX < this->l_map_bridge->getBlockDensity().x && moveY >= 0 && moveY < this->l_map_bridge->getBlockDensity().y) {
-		this->map->update(moveX, moveY); // check if we stand on a point
 
 
 		lua_getglobal(playerState, "updateMovement");
@@ -200,6 +199,8 @@ void GameMain::movePlayer(int x, int y)
 		
 		lua_pushstring(playerState, type.c_str());
 		lua_pcall(playerState, 3, 0, 0);
+
+		this->map->update(moveX, moveY); // check if we stand on a point
 
 		if (type == "goal")
 			wonTheGame();

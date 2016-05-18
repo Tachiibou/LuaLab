@@ -9,24 +9,6 @@ Map::Map(LuaMapBridge* l_map_bridge)
 	//l_map_bridge = new LuaMapBridge();
 
 	//l_map_bridge->createMap(12, 8);
-	l_map_bridge->loadMap("map1.txt");
-
-
-	this->numBlocks = l_map_bridge->getBlockDensity();
-
-	this->blockSize = sf::Vector2f(float(this->gameWidth) / float(numBlocks.x), (float)this->gameHeight / (float)numBlocks.y);
-
-	//l_map_bridge->saveMap("Elsas Äventyr.txt");
-
-	
-	//this->mouseRectangle = sf::RectangleShape(sf::Vector2f(120, 50));
-	this->mouseRectangle.setSize(this->blockSize);
-	this->mouseRectangle.setOutlineThickness((this->gameWidth / (this->numBlocks.x / this->numBlocks.y))/400);
-	
-	this->mouseRectangle.setOutlineColor(sf::Color::Black);
-	this->mouseRectangle.setPosition(sf::Vector2f(0, 0));
-	this->mouseRectangle.setFillColor(sf::Color::Transparent);
-	int k = 0;
 
 }
 
@@ -116,7 +98,29 @@ void Map::update(int x, int y)
 	
 }
 
+void Map::reload()
+{
+
+}
+
 void Map::Instantiate() {
+	l_map_bridge->loadMap("map1.txt");
+
+
+	this->numBlocks = l_map_bridge->getBlockDensity();
+
+	this->blockSize = sf::Vector2f(float(this->gameWidth) / float(numBlocks.x), (float)this->gameHeight / (float)numBlocks.y);
+
+	//l_map_bridge->saveMap("Elsas Äventyr.txt");
+
+	
+	//this->mouseRectangle = sf::RectangleShape(sf::Vector2f(120, 50));
+	this->mouseRectangle.setSize(this->blockSize);
+	this->mouseRectangle.setOutlineThickness((this->gameWidth / (this->numBlocks.x / this->numBlocks.y))/400);
+	
+	this->mouseRectangle.setOutlineColor(sf::Color::Black);
+	this->mouseRectangle.setPosition(sf::Vector2f(0, 0));
+	this->mouseRectangle.setFillColor(sf::Color::Transparent);
 	//this->mapBlocks.reserve(blockGridSize.x*blockGridSize.y);
 	BlockType blockType;
 	std::string blockTexture;

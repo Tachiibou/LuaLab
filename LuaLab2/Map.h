@@ -44,6 +44,8 @@ public:
 
 	void update(int x, int y);
 
+	void reload();
+
 	sf::Vector2f getBlockSize();
 };
 

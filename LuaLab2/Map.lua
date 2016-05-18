@@ -155,32 +155,35 @@ end
 
 function LoadMap(name)
 	local file = io.open(name,"rb")
-	local x = 0
-	local y = 0
-	local walls = 0
-	local a = file:read("*number") -- width
-	local b = file:read("*number") -- height
-	local c = file:read("*line") -- need to read this to change line for some reason, this is NIL dont know why
+	if file == nil then CreateMap(12,8)
+	else
+		local x = 0
+		local y = 0
+		local walls = 0
+		local a = file:read("*number") -- width
+		local b = file:read("*number") -- height
+		local c = file:read("*line") -- need to read this to change line for some reason, this is NIL dont know why
 
-	CreateMap(a,b) -- create an empty map
-	print(a,b,c)
+		CreateMap(a,b) -- create an empty map
+		print(a,b,c)
 
-	while true do
-		line = file:read("*line")
-		if line == nil then break end -- end loop
+		while true do
+			line = file:read("*line")
+			if line == nil then break end -- end loop
 
-		if (line.find(line,"dirt")) then SetDirt(x,y) end
-		if (line.find(line,"wall")) then SetWall(x,y) end
-		if (line.find(line,"grass")) then SetGrass(x,y) end
-		if (line.find(line,"goal")) then SetGoal(x,y) end
-		if (line.find(line,"point")) then SetPoint(x,y) end
-		if (line.find(line,"spawn")) then SetSpawn(x,y) end
+			if (line.find(line,"dirt")) then SetDirt(x,y) end
+			if (line.find(line,"wall")) then SetWall(x,y) end
+			if (line.find(line,"grass")) then SetGrass(x,y) end
+			if (line.find(line,"goal")) then SetGoal(x,y) end
+			if (line.find(line,"point")) then SetPoint(x,y) end
+			if (line.find(line,"spawn")) then SetSpawn(x,y) end
 
-		y = y + 1
+			y = y + 1
 
-		if y >= height then x = x + 1; y = 0 end
+			if y >= height then x = x + 1; y = 0 end
+		end
+		print ("we found " .. walls .. " walls.")
 	end
-	print ("we found " .. walls .. " walls.")
 	file:close()
 
 	
