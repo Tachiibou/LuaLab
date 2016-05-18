@@ -6,6 +6,7 @@
 #include "LuaMapBridge.h"
 #include "Menu.h"
 
+
 class Map
 {
 private:
@@ -23,8 +24,11 @@ private:
 	void loadLuaBlockAt(const int & index);
 
 	sf::RectangleShape mouseRectangle;
+
+	
+	
 public:
-	Map();
+	Map(LuaMapBridge* l_map_bridge);
 	~Map();
 
 	void GameDraw(sf::RenderWindow* window);
@@ -34,6 +38,10 @@ public:
 	void changeMapAt(sf::Keyboard::Key key, sf::Vector2i mousePos);
 
 	void updateMouseRectangle(sf::Vector2i mousePos);
+
+	void update(int x, int y);
+
+	sf::Vector2f getBlockSize();
 };
 
 #endif

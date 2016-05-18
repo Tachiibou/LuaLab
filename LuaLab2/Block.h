@@ -35,7 +35,7 @@ public:
 
 	void setPosition(const sf::Vector2i& pos);
 
-	void setScreenPos(const int& windowX, const int& windowY, const int &nrBLockX, const int&nrBlockY);
+	void setScreenPos(sf::Vector2f& blockSize);
 	void assignTexture(std::string name);
 
 	void CrateBlockAt(sf::Vector2i pos, BlockType type, std::string textureName);

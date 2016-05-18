@@ -1,6 +1,5 @@
 #include "GameMain.h"
-#include "player.h"
-
+#include "Player.h"
 
 GameMain::GameMain()
 {
@@ -8,7 +7,8 @@ GameMain::GameMain()
 	this->window_width = 800;
 
 	//this->textureHandler = new TextureHandler();
-	this->map = new Map();
+	this->l_map_bridge = new LuaMapBridge();
+	this->map = new Map(l_map_bridge);
 	this->menu = new Menu(this->window_width, this->window_height);
 
 	this->map->Instantiate();
@@ -24,36 +24,8 @@ GameMain::GameMain()
 	//l_map_bridge->saveMap("Elsas Äventyr2.txt");
 
 	//player = new Player();
-	int k = 0;
+	instantiatePlayer();
 
-	lua_State* state = luaL_newstate();
-
-	luaL_openlibs(state);
-
-	luaL_newmetatable(state, "MetaPlayer");
-	luaL_Reg sPlayerReg[] = {
-		{ "create", createPlayer },
-		{ "testing", printTest },
-		{ NULL, NULL }
-	};
-
-	luaL_setfuncs(state, sPlayerReg, 0);
-
-	lua_pushvalue(state, -1);
-
-	lua_setfield(state, -1, "__index");
-
-	lua_setglobal(state, "player");
-
-
-	int error = luaL_loadfile(state, "Player.lua") ||
-		lua_pcall(state, 0, 0, 0);
-	
-
-	Player* player = new Player();
-	//this->window->draw(*getPlayer(state, 1)->getSprite());
-
-	lua_close(state);
 }
 
 
@@ -62,6 +34,8 @@ GameMain::~GameMain()
 	delete this->window;
 	delete this->map;
 	delete this->menu;
+	lua_close(playerState);
+	delete TestPlayer;
 }
 
 void GameMain::Update(const float & dt)
@@ -92,10 +66,11 @@ void GameMain::Draw() {
 	{
 	case GAME_MENU:
 		this->menu->Draw(this->window);
+
 		break;
 	case GAME_GAME:
 		this->map->GameDraw(this->window);
-		
+		this->window->draw(TestPlayer->getSprite());
 		break;
 	case GAME_EDIT:
 		this->map->EditDraw(this->window);
@@ -148,6 +123,8 @@ void GameMain::handleEvents() {
 
 		if (event.type == sf::Event::KeyPressed)
 		{
+
+			playerKeyEvent(event.key.code);
 			switch (this->gameState)
 			{
 			case GAME_MENU:
@@ -177,3 +154,103 @@ void GameMain::handleEvents() {
 	}
 }
 
+void GameMain::playerKeyEvent(sf::Keyboard::Key key) {
+	
+	/*
+	
+	(1,0)
+	tempPlayer->getpos()+sf::vector2i(1,0);
+	bridge
+	*/
+	
+	switch (key)
+	{
+	case sf::Keyboard::Left:
+		this->movePlayer(-1, 0);
+		break;
+	case sf::Keyboard::Right:
+		this->movePlayer(1, 0);
+		break;
+	case sf::Keyboard::Up:
+		this->movePlayer(0, -1);
+		break;
+	case sf::Keyboard::Down:
+		this->movePlayer(0, 1);
+		break;
+	default:
+		break;
+	}
+}
+
+void GameMain::movePlayer(int x, int y)
+{
+	int moveX = TestPlayer->getPos().x + x;
+	int moveY = TestPlayer->getPos().y + y;
+
+	if (moveX >= 0 && moveX < this->l_map_bridge->getBlockDensity().x && moveY >= 0 && moveY < this->l_map_bridge->getBlockDensity().y) {
+		this->map->update(moveX, moveY); // check if we stand on a point
+
+
+		lua_getglobal(playerState, "updateMovement");
+		lua_pushnumber(playerState, x);
+		lua_pushnumber(playerState, y);
+		std::string type = this->l_map_bridge->getBlockTypeString(TestPlayer->getPos().x + x, TestPlayer->getPos().y + y);
+		lua_pushstring(playerState, type.c_str());
+		lua_pcall(playerState, 3, 0, 0);
+	}
+	else
+		std::cout << "Trying to walk out of bounds \n";
+
+
+
+
+}
+
+void GameMain::instantiatePlayer() {
+	int k = 0;
+
+	playerState = luaL_newstate();
+
+	luaL_openlibs(playerState);
+
+	luaL_newmetatable(playerState, "MetaPlayer");
+	luaL_Reg sPlayerReg[] = {
+		{ "create", createPlayer },
+		{ "testing", printTest },
+		{ "setSize", setPlayerSize },
+		{ "setPos", setPlayerPosition },
+		{ "walk", playerWalk },
+		{ NULL, NULL }
+	};
+
+	luaL_setfuncs(playerState, sPlayerReg, 0);
+
+	lua_pushvalue(playerState, -1);
+
+	lua_setfield(playerState, -1, "__index");
+
+	lua_setglobal(playerState, "player");
+
+
+	int error = luaL_loadfile(playerState, "Player.lua") ||
+		lua_pcall(playerState, 0, 0, 0);
+
+	lua_getglobal(playerState, "setPlayerSize");
+
+	sf::Vector2f size = this->map->getBlockSize();
+
+	lua_pushnumber(playerState, size.x);
+	lua_pushnumber(playerState, size.y);
+
+	lua_pcall(playerState, 2, 0, 0);
+
+	//lua_getglobal(playerState, "getPlayerSizeX");
+	//lua_pcall(playerState, 0, 1, 0);
+	//
+	//float derp = (float)lua_tonumber(playerState, -1);
+
+	//std::cout << "[C++]";
+	//TestPlayer->addPoint();
+	//TestPlayer->writeText();
+	//this->window->draw(*getPlayer(state, 1)->getSprite());
+}

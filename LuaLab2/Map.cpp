@@ -2,12 +2,14 @@
 
 
 
-Map::Map()
+
+Map::Map(LuaMapBridge* l_map_bridge)
 {
+	this->l_map_bridge = l_map_bridge;
 	this->gameWidth = 800;
 	this->gameHeight = 600;
 
-	l_map_bridge = new LuaMapBridge();
+	//l_map_bridge = new LuaMapBridge();
 
 	l_map_bridge->createMap(16, 12);
 
@@ -27,6 +29,7 @@ Map::Map()
 	this->mouseRectangle.setPosition(sf::Vector2f(0, 0));
 	this->mouseRectangle.setFillColor(sf::Color::Transparent);
 	int k = 0;
+
 }
 
 
@@ -38,12 +41,16 @@ Map::~Map()
 	//l_map_bridge->saveMap("Elsas Äventyr.txt");
 
 	delete l_map_bridge;
+	
 }
+
+
 
 void Map::GameDraw(sf::RenderWindow* window) {
 	for (int i = 0; i < this->mapBlocks.size(); i++) {
 		window->draw(*this->mapBlocks.at(i)->getSprite());
 	}
+
 	
 }
 
@@ -63,6 +70,38 @@ void Map::updateMouseRectangle(sf::Vector2i mousePos) {
 	}
 }
 
+void Map::update(int x, int y)
+{
+	int kasdf = this->numBlocks.y * x + y;
+	
+	switch (this->l_map_bridge->getBlockType(x, y))
+	{
+	case GRASS:
+		this->l_map_bridge->setBlock(x, y, DIRT);
+		this->loadLuaBlockAt(kasdf);
+		break;
+	case DIRT:
+		this->l_map_bridge->setBlock(x, y, GRASS);
+		this->loadLuaBlockAt(kasdf);
+		break;
+	case SPAWN:
+		break;
+	case WALL:
+		break;
+	case POINT:
+		this->l_map_bridge->setBlock(x,y,GRASS);
+		break;
+	case GOAL:
+		// WIN
+		break;
+	case NRTYPES:
+		break;
+	default:
+		break;
+	}
+	
+}
+
 void Map::Instantiate() {
 	//this->mapBlocks.reserve(blockGridSize.x*blockGridSize.y);
 	BlockType blockType;
@@ -74,7 +113,7 @@ void Map::Instantiate() {
 			blockType = l_map_bridge->getBlockType(x, y);
 			blockTexture = l_map_bridge->getBlockTexture(x, y);
 			this->mapBlocks.push_back(new Block(sf::Vector2i(x, y), BlockType::DIRT, "./res/Dirt.png"));
-			this->mapBlocks.back()->setScreenPos(this->gameWidth, this->gameHeight, this->numBlocks.x, this->numBlocks.y);
+			this->mapBlocks.back()->setScreenPos(this->blockSize);
 
 			loadLuaBlockAt(mapBlocks.size() - 1);
 		}
@@ -150,4 +189,8 @@ void Map::Reload() {
 	}
 
 	Instantiate();
+}
+
+sf::Vector2f Map::getBlockSize() {
+	return this->blockSize;
 }

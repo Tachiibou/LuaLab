@@ -26,8 +26,16 @@ private:
 	float FPS;
 	float deltaTime;
 	float timeSinceLastFPS;
+	LuaMapBridge* l_map_bridge;
 
 	void doFPS(const float& dt);
+
+
+	//PLAYER
+	void instantiatePlayer();
+	lua_State* playerState;
+	void playerKeyEvent(sf::Keyboard::Key key);
+	void movePlayer(int x, int y);
 	
 public:
 	GameMain();

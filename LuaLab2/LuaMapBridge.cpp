@@ -33,6 +33,8 @@ sf::Vector2i LuaMapBridge::getBlockDensity() {
 	returnValue.y = (int)lua_tonumber(this->state, -1);
 	lua_pop(this->state,2);
 
+	
+
 	return returnValue;
 }
 
@@ -40,6 +42,23 @@ void LuaMapBridge::Error(int error, const char* type) {
 	if (error) {
 		printf("There was an error: %s - FIX\n", type);
 	}
+}
+
+std::string LuaMapBridge::getBlockTypeString(const int & x, const int & y)
+{
+	std::string returnString;
+
+	lua_getglobal(this->state, "GetType");
+	lua_pushinteger(this->state, x);
+	lua_pushinteger(this->state, y);
+
+	Error(lua_pcall(this->state, 2, 1, 0), "Block Type");
+
+
+
+	returnString = lua_tostring(this->state, -1);
+	lua_pop(this->state, 1);
+	return returnString;
 }
 
 BlockType LuaMapBridge::getBlockType(const int &x, const int &y) {
@@ -51,6 +70,8 @@ BlockType LuaMapBridge::getBlockType(const int &x, const int &y) {
 	lua_pushinteger(this->state, y);
 
 	Error(lua_pcall(this->state, 2, 1, 0), "Block Type");
+
+	
 
 	returnString = lua_tostring(this->state, -1);
 	lua_pop(this->state, 1);

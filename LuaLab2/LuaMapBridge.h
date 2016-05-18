@@ -15,12 +15,14 @@ private:
 	std::string getFunctionName(BlockType type);
 	BlockType getBlockFromLua(std::string blockName);
 	
+
 public:
 	LuaMapBridge();
 	~LuaMapBridge();
 
 	sf::Vector2i getBlockDensity();
 
+	std::string getBlockTypeString(const int &x, const int &y);
 	BlockType getBlockType(const int &x, const int &y);
 	std::string getBlockTexture(const int &x, const int &y);
 

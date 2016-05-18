@@ -22,8 +22,8 @@ void Block::setPosition(const sf::Vector2i& pos) {
 	
 }
 
-void Block::setScreenPos(const int& windowX, const int& windowY, const int &nrBLockX, const int&nrBlockY) {
-	this->m_rect =sf::IntRect((windowX / nrBLockX)*this->m_position.x, (windowY/ nrBlockY)*this->m_position.y, windowX / nrBLockX, windowY / nrBlockY);
+void Block::setScreenPos(sf::Vector2f& blockSize) {
+	this->m_rect =sf::IntRect(blockSize.x*this->m_position.x, blockSize.y*this->m_position.y, blockSize.x, blockSize.y);
 	
 	//this->m_sprite->setTextureRect(m_rect);
 	this->m_sprite->setPosition(m_rect.left, m_rect.top);
