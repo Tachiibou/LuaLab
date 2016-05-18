@@ -41,6 +41,8 @@ public:
 
 	void update(int x, int y);
 
+	sf::Vector2i getSpawnPoint();
+
 	sf::Vector2f getBlockSize();
 };
 

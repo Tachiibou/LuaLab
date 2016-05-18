@@ -30,13 +30,17 @@ function updateMovement(x, y, type)
 	elseif type == "wall" then print ("wall") 
 	elseif type == "goal" then print ("goal") win = 1
 	elseif type == "spawn" then print ("spawn") character:walk(x,y)
-	elseif type == "point" then print ("point") character:walk(x,y)
+	elseif type == "point" then print ("point") character:walk(x,y) points = points +1
 	else
 		print("WRONG TYPE BISH")end
 end
 
 function getWin()
 	return win
+end
+
+function getPoints()
+	return points
 end
 
 function setPosition(x, y)

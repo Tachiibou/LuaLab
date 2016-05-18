@@ -1,9 +1,12 @@
 #pragma once
 #include "lua.hpp"
 #include "SFML\Graphics.hpp"
+#include <fstream>
+#include <iostream>
 #include <vector>
 #include "Map.h"
 #include "Menu.h"
+
 
 
 
@@ -29,7 +32,8 @@ private:
 	LuaMapBridge* l_map_bridge;
 
 	void doFPS(const float& dt);
-
+	float totalTime;
+	
 
 	//PLAYER
 	void instantiatePlayer();
@@ -38,6 +42,11 @@ private:
 	void movePlayer(int x, int y);
 	bool win;
 	void wonTheGame();
+	void saveHighScore(float points);
+	void loadHighScore();
+	float highSscore;
+	float getPlayerScore();
+	void resetHighScore();
 	
 public:
 	GameMain();

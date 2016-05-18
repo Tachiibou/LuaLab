@@ -8,15 +8,16 @@ Map::Map(LuaMapBridge* l_map_bridge)
 
 	//l_map_bridge = new LuaMapBridge();
 
-	l_map_bridge->createMap(12, 8);
+	//l_map_bridge->createMap(12, 8);
 
-
+	l_map_bridge->loadMap("Elsas Äventyr.txt");
 	this->numBlocks = l_map_bridge->getBlockDensity();
+	
 
 	this->blockSize = sf::Vector2f(float(this->gameWidth) / float(numBlocks.x), (float)this->gameHeight / (float)numBlocks.y);
 	
-	//l_map_bridge->loadMap("Elsas Äventyr.txt");
-	//l_map_bridge->saveMap("Elsas Äventyr.txt");
+	
+	
 
 	
 	//this->mouseRectangle = sf::RectangleShape(sf::Vector2f(120, 50));
@@ -33,6 +34,7 @@ Map::Map(LuaMapBridge* l_map_bridge)
 
 Map::~Map()
 {
+	l_map_bridge->saveMap("Elsas Äventyr.txt");
 	for (unsigned int i = 0; i < mapBlocks.size();i++){
 		delete this->mapBlocks.at(i);
 	}
@@ -75,19 +77,19 @@ void Map::update(int x, int y)
 	switch (this->l_map_bridge->getBlockType(x, y))
 	{
 	case GRASS:
-		this->l_map_bridge->setBlock(x, y, DIRT);
-		this->loadLuaBlockAt(kasdf);
+		//this->l_map_bridge->setBlock(x, y, DIRT);
+		//this->loadLuaBlockAt(kasdf);
 		break;
 	case DIRT:
-		this->l_map_bridge->setBlock(x, y, GRASS);
-		this->loadLuaBlockAt(kasdf);
+		//this->l_map_bridge->setBlock(x, y, GRASS);
+		//this->loadLuaBlockAt(kasdf);
 		break;
 	case SPAWN:
 		break;
 	case WALL:
 		break;
 	case POINT:
-		this->l_map_bridge->setBlock(x,y,GRASS);
+		//this->l_map_bridge->setBlock(x,y,GRASS);
 		break;
 	case GOAL:
 		// WIN
@@ -191,4 +193,18 @@ void Map::Reload() {
 
 sf::Vector2f Map::getBlockSize() {
 	return this->blockSize;
+}
+
+sf::Vector2i Map::getSpawnPoint() {
+	sf::Vector2i spawnPoint = sf::Vector2i(0, 0);
+	sf::Vector2i cCheckSpawn;
+	for (unsigned int i = 0; i < this->mapBlocks.size(); i++) {
+		cCheckSpawn = this->mapBlocks.at(i)->getPos();
+		if (this->l_map_bridge->getBlockType(cCheckSpawn.x, cCheckSpawn.y) == BlockType::SPAWN) {
+			spawnPoint = cCheckSpawn;
+			break;
+		}
+	}
+
+	return spawnPoint;
 }
