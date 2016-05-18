@@ -8,14 +8,14 @@ Map::Map(LuaMapBridge* l_map_bridge)
 
 	//l_map_bridge = new LuaMapBridge();
 
-	l_map_bridge->createMap(12, 8);
+	//l_map_bridge->createMap(12, 8);
+	l_map_bridge->loadMap("map1.txt");
 
 
 	this->numBlocks = l_map_bridge->getBlockDensity();
 
 	this->blockSize = sf::Vector2f(float(this->gameWidth) / float(numBlocks.x), (float)this->gameHeight / (float)numBlocks.y);
-	
-	//l_map_bridge->loadMap("Elsas Äventyr.txt");
+
 	//l_map_bridge->saveMap("Elsas Äventyr.txt");
 
 	
@@ -58,6 +58,21 @@ void Map::EditDraw(sf::RenderWindow* window) {
 	window->draw(mouseRectangle);
 }
 
+void Map::EditUpdate(sf::Keyboard::Key key, GameState& state)
+{
+	switch (key)
+	{
+	case sf::Keyboard::S:
+		this->l_map_bridge->saveMap(MAP_NAME);
+		std::cout << "Map is saved\n";
+		state = GameState::GAME_MENU;
+		break;
+	default:
+		break;
+
+	}
+}
+
 void Map::updateMouseRectangle(sf::Vector2i mousePos) {
 	for (unsigned int i = 0; i < this->mapBlocks.size(); i++) {
 		if (this->mapBlocks.at(i)->isInside(mousePos)) {
@@ -70,17 +85,17 @@ void Map::updateMouseRectangle(sf::Vector2i mousePos) {
 
 void Map::update(int x, int y)
 {
-	int kasdf = this->numBlocks.y * x + y;
+	int index = this->numBlocks.y * x + y;
 	
 	switch (this->l_map_bridge->getBlockType(x, y))
 	{
 	case GRASS:
 		this->l_map_bridge->setBlock(x, y, DIRT);
-		this->loadLuaBlockAt(kasdf);
+		this->loadLuaBlockAt(index);
 		break;
 	case DIRT:
 		this->l_map_bridge->setBlock(x, y, GRASS);
-		this->loadLuaBlockAt(kasdf);
+		this->loadLuaBlockAt(index);
 		break;
 	case SPAWN:
 		break;
@@ -88,6 +103,7 @@ void Map::update(int x, int y)
 		break;
 	case POINT:
 		this->l_map_bridge->setBlock(x,y,GRASS);
+		this->loadLuaBlockAt(index);
 		break;
 	case GOAL:
 		// WIN

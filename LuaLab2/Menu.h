@@ -1,14 +1,7 @@
 #pragma once
 #include "SFML\Graphics.hpp"
 #include <iostream>
-
-enum GameState
-{
-	GAME_MENU,
-	GAME_GAME,
-	GAME_EDIT,
-	GAME_EXIT
-};
+#include "GameState.h"
 class Menu
 {
 private:

@@ -134,7 +134,8 @@ void GameMain::handleEvents() {
 			case GAME_GAME:
 				break;
 			case GAME_EDIT:
-				this->map->changeMapAt(event.key.code, getMousePos());
+				this->map->changeMapAt(event.key.code, getMousePos()); // Update the tiles
+				this->map->EditUpdate(event.key.code,this->gameState); // save the file and change state to menu again
 				break;
 			case GAME_EXIT:
 				break;

@@ -5,11 +5,13 @@
 #include <vector>
 #include "LuaMapBridge.h"
 #include "Menu.h"
+#include "GameState.h"
 
 
 class Map
 {
 private:
+	const char* MAP_NAME = "map1.txt";
 	int nrBlocksWidth, nrBlocksHeight;
 	sf::Vector2i blockGridSize;
 	int gameWidth, gameHeight;
@@ -33,6 +35,7 @@ public:
 
 	void GameDraw(sf::RenderWindow* window);
 	void EditDraw(sf::RenderWindow* window);
+	void EditUpdate(sf::Keyboard::Key key, GameState& state);
 	void Instantiate();
 
 	void changeMapAt(sf::Keyboard::Key key, sf::Vector2i mousePos);
