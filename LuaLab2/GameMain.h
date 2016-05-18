@@ -36,6 +36,8 @@ private:
 	lua_State* playerState;
 	void playerKeyEvent(sf::Keyboard::Key key);
 	void movePlayer(int x, int y);
+	bool win;
+	void wonTheGame();
 	
 public:
 	GameMain();

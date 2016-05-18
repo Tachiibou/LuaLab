@@ -1,24 +1,22 @@
 #include "Map.h"
 
-
-
-
 Map::Map(LuaMapBridge* l_map_bridge)
 {
 	this->l_map_bridge = l_map_bridge;
-	this->gameWidth = 800;
-	this->gameHeight = 600;
+	this->gameWidth = 1200;
+	this->gameHeight = 800;
 
 	//l_map_bridge = new LuaMapBridge();
 
-	l_map_bridge->createMap(16, 12);
+	l_map_bridge->createMap(12, 8);
 
 
 	this->numBlocks = l_map_bridge->getBlockDensity();
 
 	this->blockSize = sf::Vector2f(float(this->gameWidth) / float(numBlocks.x), (float)this->gameHeight / (float)numBlocks.y);
-
+	
 	//l_map_bridge->loadMap("Elsas Äventyr.txt");
+	//l_map_bridge->saveMap("Elsas Äventyr.txt");
 
 	
 	//this->mouseRectangle = sf::RectangleShape(sf::Vector2f(120, 50));
@@ -38,7 +36,7 @@ Map::~Map()
 	for (unsigned int i = 0; i < mapBlocks.size();i++){
 		delete this->mapBlocks.at(i);
 	}
-	//l_map_bridge->saveMap("Elsas Äventyr.txt");
+	
 
 	delete l_map_bridge;
 	

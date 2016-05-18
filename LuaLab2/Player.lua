@@ -1,18 +1,8 @@
 playerTex = "./res/player.png"
 local character = player.create(playerTex);
-posX = 0
-posY = 0
 points = 0
-character:testing();
-character:testing();
-character:testing();
-
 playerSizeX = 0
 playerSizeY = 0
-
-win = 0
-
-
 
 function testing2()
 	print("In Lua");
@@ -47,6 +37,10 @@ end
 
 function getWin()
 	return win
+end
+
+function setPosition(x, y)
+	character:setPos(x,y)
 end
 
 

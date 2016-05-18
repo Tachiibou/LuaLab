@@ -3,8 +3,8 @@
 
 GameMain::GameMain()
 {
-	this->window_height = 600;
-	this->window_width = 800;
+	this->window_height = 800;
+	this->window_width = 1200;
 
 	//this->textureHandler = new TextureHandler();
 	this->l_map_bridge = new LuaMapBridge();
@@ -14,6 +14,7 @@ GameMain::GameMain()
 	this->map->Instantiate();
 
 	this->timeSinceLastFPS = 0;
+	this->win = false;
 	FPS = 0;
 
 	//l_map_bridge->setBlock(3, 3, BlockType::WALL);
@@ -195,8 +196,13 @@ void GameMain::movePlayer(int x, int y)
 		lua_pushnumber(playerState, x);
 		lua_pushnumber(playerState, y);
 		std::string type = this->l_map_bridge->getBlockTypeString(TestPlayer->getPos().x + x, TestPlayer->getPos().y + y);
+		
 		lua_pushstring(playerState, type.c_str());
 		lua_pcall(playerState, 3, 0, 0);
+
+		if (type == "goal")
+			wonTheGame();
+
 	}
 	else
 		std::cout << "Trying to walk out of bounds \n";
@@ -204,6 +210,12 @@ void GameMain::movePlayer(int x, int y)
 
 
 
+}
+
+void GameMain::wonTheGame() {
+	win = true;
+	//SaveGame();
+	this->gameState = GameState::GAME_MENU;
 }
 
 void GameMain::instantiatePlayer() {
@@ -243,6 +255,8 @@ void GameMain::instantiatePlayer() {
 	lua_pushnumber(playerState, size.y);
 
 	lua_pcall(playerState, 2, 0, 0);
+
+	//this->map->getSpawnPos()
 
 	//lua_getglobal(playerState, "getPlayerSizeX");
 	//lua_pcall(playerState, 0, 1, 0);
